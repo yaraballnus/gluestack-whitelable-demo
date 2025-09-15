@@ -5,7 +5,8 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
-import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
+import { GluestackUIProvider } from '@gluestack-ui/themed';
+import { config } from '@/components/ui/gluestack-ui-provider/config';
 import '@/global.css';
 
 export const unstable_settings = {
@@ -13,12 +14,9 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    
-    <GluestackUIProvider mode="light">
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <GluestackUIProvider config={config}>
+      <ThemeProvider value={useColorScheme() === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
@@ -26,6 +24,5 @@ export default function RootLayout() {
       <StatusBar style="auto" />
     </ThemeProvider>
     </GluestackUIProvider>
-  
   );
 }
