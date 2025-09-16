@@ -32,10 +32,12 @@ export default function DemoScreen() {
   const [showDrawer, setShowDrawer] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const [showDatePicker, setShowDatePicker] = React.useState(false);
+  const [selectedTime, setSelectedTime] = React.useState(new Date());
+  const [showTimePicker, setShowTimePicker] = React.useState(false);
   const [pressMessage, setPressMessage] = React.useState("");
   const [showGif, setShowGif] = React.useState(false);
-
   const glowAnimation = React.useRef(new Animated.Value(0)).current;
+  const [setShowLongPressText] = React.useState(false);
 
   const startGlowing = () => {
     Animated.timing(glowAnimation, {
@@ -52,8 +54,6 @@ export default function DemoScreen() {
       useNativeDriver: false,
     }).start();
   };
-  const [selectedTime, setSelectedTime] = React.useState(new Date());
-  const [showTimePicker, setShowTimePicker] = React.useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -111,88 +111,6 @@ export default function DemoScreen() {
         />
       </Input>
 
-      <VStack space="md" className="items-center pb-7">
-        <Animated.View
-          style={[
-            styles.glowContainer,
-            {
-              backgroundColor: glowAnimation.interpolate({
-                inputRange: [0, 1],
-                outputRange: ["rgb(59, 130, 246)", "rgb(239, 68, 68)"],
-              }),
-              shadowColor: glowAnimation.interpolate({
-                inputRange: [0, 1],
-                outputRange: ["rgb(59, 130, 246)", "rgb(239, 68, 68)"],
-              }),
-              shadowOpacity: glowAnimation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0.3, 0.8],
-              }),
-            },
-          ]}
-        >
-          <Pressable
-            className="p-5"
-            onPressIn={() => {
-              startGlowing();
-            }}
-            onPressOut={() => {
-              stopGlowing();
-            }}
-            onPress={() => {
-              setPressMessage("You pressed the button!");
-              setShowGif(false);
-            }}
-            onLongPress={() => {
-              setPressMessage("You held the button - that's a long press!");
-              setShowGif(true);
-            }}
-            style={{ userSelect: "none" }} // Prevent text selection
-          >
-            <Text className="text-white font-bold">Press and hold me!</Text>
-          </Pressable>
-        </Animated.View>
-
-        {pressMessage ? (
-          <Text className="text-lg text-gray-700">{pressMessage}</Text>
-        ) : null}
-
-        {showGif && (
-          <Modal
-            transparent={true}
-            animationType="slide"
-            visible={showGif}
-            onRequestClose={() => {
-              setShowGif(false);
-            }}
-          >
-            <View style={styles.modalBackground}>
-              <View style={styles.modalContainer}>
-                <TouchableOpacity
-                  style={{
-                    position: "absolute",
-                    top: 10,
-                    right: 10,
-                    zIndex: 1,
-                  }}
-                  onPress={() => setShowGif(false)}
-                >
-                  <Text style={{ color: "white", fontSize: 18 }}>✕</Text>
-                </TouchableOpacity>
-                <Image
-                  source={{
-                    uri: "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXQ1a3lyZW5jZGt3cnI0eHBpZzE0dHd5d3VnbTRndGJpMndmdmJ5diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0G18BkChcRRctMZ2/giphy.gif",
-                  }}
-                  alt="Button gif"
-                  className="w-[400px] h-[300px] justify-center m-left-20"
-                  style={{ aspectRatio: 1.5 }}
-                />
-              </View>
-            </View>
-          </Modal>
-        )}
-      </VStack>
-
       {Platform.OS === "web" ? (
         <input
           aria-label="Date"
@@ -242,6 +160,105 @@ export default function DemoScreen() {
           )}
         </>
       )}
+
+      <VStack space="md" className="items-center pb-7">
+        <Animated.View
+          style={[
+            styles.glowContainer,
+            {
+              backgroundColor: glowAnimation.interpolate({
+                inputRange: [0, 1],
+                outputRange: ["#07aea4", "rgba(255, 0, 204, 1)"],
+              }),
+              shadowColor: glowAnimation.interpolate({
+                inputRange: [0, 1],
+                outputRange: ["#07aea4", "rgba(255, 0, 204, 1)"],
+              }),
+              shadowOpacity: glowAnimation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0.3, 0.8],
+              }),
+            },
+          ]}
+        >
+          <Pressable
+            className="p-5"
+            onPressIn={() => {
+              startGlowing();
+            }}
+            onPressOut={() => {
+              stopGlowing();
+            }}
+            onPress={() => {
+              setPressMessage("You pressed the button!");
+              setShowGif(false);
+            }}
+            onLongPress={() => {
+              setPressMessage("You held the button - that's a long press!");
+              setTimeout(() => {
+                setShowGif(true);
+                setPressMessage("")
+              }, 2000);
+            }}
+            style={{ userSelect: "none" }} // Prevent text selection
+          >
+            <Text className="text-white font-bold">Press and hold me!</Text>
+          </Pressable>
+        </Animated.View>
+
+        {pressMessage ? (
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text className="text-lg text-gray-700">{pressMessage}</Text>
+            <TouchableOpacity
+              style={{
+                marginLeft: 8,
+                backgroundColor: "#eee",
+                borderRadius: 4,
+                alignSelf: "flex-start",
+                padding: 0,
+              }}
+              onPress={() => setPressMessage("")}
+            >
+              <Text className="text-[#07aea4] self-start">x</Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
+
+        {showGif && (
+          <Modal
+            transparent={true}
+            animationType="slide"
+            visible={showGif}
+            onRequestClose={() => {
+              setShowGif(false);
+            }}
+          >
+            <View style={styles.modalBackground}>
+              <View style={styles.modalContainer}>
+                <TouchableOpacity
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                    right: 10,
+                    zIndex: 1,
+                  }}
+                  onPress={() => setShowGif(false)}
+                >
+                  <Text style={{ color: "white", fontSize: 18 }}>✕</Text>
+                </TouchableOpacity>
+                <Image
+                  source={{
+                    uri: "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXQ1a3lyZW5jZGt3cnI0eHBpZzE0dHd5d3VnbTRndGJpMndmdmJ5diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0G18BkChcRRctMZ2/giphy.gif",
+                  }}
+                  alt="Button gif"
+                  className="w-[400px] h-[300px] justify-center m-left-20"
+                  style={{ aspectRatio: 1.5 }}
+                />
+              </View>
+            </View>
+          </Modal>
+        )}
+      </VStack>
     </SafeAreaView>
   );
 }
