@@ -1,4 +1,5 @@
 import { Button, ButtonText } from "@/components/ui/button";
+import DecryptingText from "@/components/ui/decrypting-text";
 import {
   Drawer,
   DrawerBackdrop,
@@ -80,7 +81,7 @@ export default function DemoScreen() {
             </DrawerCloseButton>
           </DrawerHeader>
           <DrawerBody>
-            <Text>This is the basic drawer component.</Text>
+            <DecryptingText text="This is the basic drawer component." />
           </DrawerBody>
           <DrawerFooter>
             <Button
