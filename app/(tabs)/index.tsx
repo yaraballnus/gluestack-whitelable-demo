@@ -110,7 +110,7 @@ export default function DemoScreen() {
         />
       </Input>
 
-      <VStack space="md" className="items-center">
+      <VStack space="md" className="items-center pb-7">
         <Animated.View
           style={[
             styles.glowContainer,
@@ -131,7 +131,7 @@ export default function DemoScreen() {
           ]}
         >
           <Pressable
-            className="p-4"
+            className="p-5"
             onPressIn={() => {
               startGlowing();
             }}
@@ -153,7 +153,7 @@ export default function DemoScreen() {
         </Animated.View>
 
         {pressMessage ? (
-          <Text className="text-lg text-gray-700 pb-4">{pressMessage}</Text>
+          <Text className="text-lg text-gray-700">{pressMessage}</Text>
         ) : null}
 
         {showGif && (
