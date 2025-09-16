@@ -1,4 +1,6 @@
-import { Button, ButtonText } from "@/components/ui/button";
+import { Box } from "@/components/ui/box";
+import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
+import { Center } from "@/components/ui/center";
 import DecryptingText from "@/components/ui/decrypting-text";
 import {
   Drawer,
@@ -10,11 +12,14 @@ import {
   DrawerHeader,
 } from "@/components/ui/drawer";
 import { Heading } from "@/components/ui/heading";
+import { HStack } from "@/components/ui/hstack";
 import { CloseIcon, Icon } from "@/components/ui/icon";
 import { Image } from "@/components/ui/image";
 import { Input, InputField } from "@/components/ui/input";
+import { Portal } from "@/components/ui/portal";
 import { Pressable } from "@/components/ui/pressable";
 import { Text } from "@/components/ui/text";
+import { Textarea, TextareaInput } from "@/components/ui/textarea";
 import { VStack } from "@/components/ui/vstack";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import React from "react";
@@ -37,7 +42,8 @@ export default function DemoScreen() {
   const [pressMessage, setPressMessage] = React.useState("");
   const [showGif, setShowGif] = React.useState(false);
   const glowAnimation = React.useRef(new Animated.Value(0)).current;
-
+  const [visible, setVisible] = React.useState(false);
+  const handleClose = () => setVisible(false);
 
   const startGlowing = () => {
     Animated.timing(glowAnimation, {
@@ -197,7 +203,7 @@ export default function DemoScreen() {
               setPressMessage("You held the button - that's a long press!");
               setTimeout(() => {
                 setShowGif(true);
-                setPressMessage("")
+                setPressMessage("");
               }, 2000);
             }}
             style={{ userSelect: "none" }} // Prevent text selection
@@ -244,7 +250,7 @@ export default function DemoScreen() {
                   }}
                   onPress={() => setShowGif(false)}
                 >
-                  <Text style={{ color: "white", fontSize: 18 }}>✕</Text>
+                  <Icon as={CloseIcon} size="sm" color="#07aea4" />
                 </TouchableOpacity>
                 <Image
                   source={{
@@ -259,6 +265,40 @@ export default function DemoScreen() {
           </Modal>
         )}
       </VStack>
+
+      <View className="p-4">
+        <HStack className="gap-4 justify-center w-full items-stretch">
+          <Box className="border border-[#07aea4] rounded-md p-2 w-1/3 justify-center items-center">
+            <Text className="text-[#07aea4]">Text inside a Box</Text>
+          </Box>
+          <Textarea className="w-1/3 h-auto">
+            <TextareaInput placeholder="Your text goes in this Textarea..." />
+          </Textarea>
+          <View className="w-1/3 justify-center items-center">
+            <Portal isOpen={visible}>
+              <Center className="flex-1">
+                <HStack className="border-[#07aea4] border-2 w-1/3 py-10 gap-4 rounded-lg flex-row justify-center items-center bg-background-0">
+                  <Text className="text-[#07aea4]">Portal Content</Text>
+                  <Button
+                    size="xs"
+                    className="h-6 px-1 absolute top-2 right-2 border-[#07aea4]"
+                    variant="outline"
+                    onPress={handleClose}
+                  >
+                    <ButtonIcon as={CloseIcon} color="#07aea4"/>
+                  </Button>
+                </HStack>
+              </Center>
+            </Portal>
+            <Button
+              className="w-full web:h-full"
+              onPress={() => setVisible(!visible)}
+            >
+              <ButtonText>Toggle Portal</ButtonText>
+            </Button>
+          </View>
+        </HStack>
+      </View>
     </SafeAreaView>
   );
 }
@@ -270,8 +310,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
     gap: 20,
-    width: "100%",
-    height: "100%",
   },
   link: {
     marginTop: 15,
