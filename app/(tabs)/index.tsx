@@ -182,8 +182,9 @@ export default function DemoScreen() {
                   source={{
                     uri: "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXQ1a3lyZW5jZGt3cnI0eHBpZzE0dHd5d3VnbTRndGJpMndmdmJ5diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0G18BkChcRRctMZ2/giphy.gif",
                   }}
-                  alt="Fire gif"
-                  className="w-3/4 h-2/4 justify-center m-left-20"
+                  alt="Button gif"
+                  className="w-[400px] h-[300px] justify-center m-left-20"
+                  style={{ aspectRatio: 1.5 }}
                 />
               </View>
             </View>
