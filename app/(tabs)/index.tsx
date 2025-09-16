@@ -17,7 +17,14 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import React from "react";
-import { Animated, Modal, Platform, StyleSheet, View } from "react-native";
+import {
+  Animated,
+  Modal,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function DemoScreen() {
@@ -125,10 +132,11 @@ export default function DemoScreen() {
         >
           <Pressable
             className="p-4"
-            onPressIn={startGlowing}
+            onPressIn={() => {
+              startGlowing();
+            }}
             onPressOut={() => {
               stopGlowing();
-              setShowGif(false);
             }}
             onPress={() => {
               setPressMessage("You pressed the button!");
@@ -138,14 +146,14 @@ export default function DemoScreen() {
               setPressMessage("You held the button - that's a long press!");
               setShowGif(true);
             }}
-            delayLongPress={500}
+            style={{ userSelect: "none" }} // Prevent text selection
           >
             <Text className="text-white font-bold">Press and hold me!</Text>
           </Pressable>
         </Animated.View>
 
         {pressMessage ? (
-          <Text className="text-lg text-gray-700">{pressMessage}</Text>
+          <Text className="text-lg text-gray-700 pb-4">{pressMessage}</Text>
         ) : null}
 
         {showGif && (
@@ -159,12 +167,23 @@ export default function DemoScreen() {
           >
             <View style={styles.modalBackground}>
               <View style={styles.modalContainer}>
+                <TouchableOpacity
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                    right: 10,
+                    zIndex: 1,
+                  }}
+                  onPress={() => setShowGif(false)}
+                >
+                  <Text style={{ color: "white", fontSize: 18 }}>✕</Text>
+                </TouchableOpacity>
                 <Image
                   source={{
-                    uri: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNnl3ZmdxZm8ydXR5MWZuanQzOG1qcm5lYnNwcXR5ZnVyMHo5eWJuMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nrXif9YF3s7jO/giphy.gif",
+                    uri: "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXQ1a3lyZW5jZGt3cnI0eHBpZzE0dHd5d3VnbTRndGJpMndmdmJ5diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0G18BkChcRRctMZ2/giphy.gif",
                   }}
                   alt="Fire gif"
-                  className="w-full h-full"
+                  className="w-3/4 h-2/4 justify-center m-left-20"
                 />
               </View>
             </View>
@@ -255,5 +274,7 @@ const styles = StyleSheet.create({
     height: "90%",
     borderRadius: 10,
     overflow: "hidden",
+    justifyContent: "center", // Center content vertically
+    alignItems: "center", // Center content horizontally
   },
 });
