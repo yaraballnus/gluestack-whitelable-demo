@@ -12,9 +12,11 @@ import { Heading } from "@/components/ui/heading";
 import { CloseIcon, Icon } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import React from "react";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function DemoScreen() {
   const [showDrawer, setShowDrawer] = React.useState(false);
@@ -22,7 +24,7 @@ export default function DemoScreen() {
   const [showDatePicker, setShowDatePicker] = React.useState(false);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.container}>
       <Button
         onPress={() => {
           setShowDrawer(true);
@@ -62,11 +64,12 @@ export default function DemoScreen() {
         </DrawerContent>
       </Drawer>
 
-      <Text size="4xl" style={{ color: "#d21919ff" }}>
-        This is the demo page for multiple gluestack-ui components.
-      </Text>
-      <Text size="md">This is a simple text from gluestack-ui.</Text>
-
+      <VStack className="items-center flex-wrap justify-between web:h-full">
+        <Heading className="text-4xl text-green-600">
+          This is the demo page for multiple gluestack-ui components.
+        </Heading>
+        <Text className="text-md">This is a simple text from gluestack-ui.</Text>
+      </VStack>
       <Input variant="outline" size="md">
         <InputField placeholder="Enter Text in this Input Component..." />
       </Input>
@@ -88,3 +91,19 @@ export default function DemoScreen() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    gap: 20,
+    width: "100%",
+    height: "100%",
+  },
+  link: {
+    marginTop: 15,
+    paddingVertical: 15,
+  },
+});
