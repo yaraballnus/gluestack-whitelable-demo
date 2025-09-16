@@ -22,6 +22,8 @@ export default function DemoScreen() {
   const [showDrawer, setShowDrawer] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const [showDatePicker, setShowDatePicker] = React.useState(false);
+  const [selectedTime, setSelectedTime] = React.useState(new Date());
+  const [showTimePicker, setShowTimePicker] = React.useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -83,7 +85,7 @@ export default function DemoScreen() {
         <input
           aria-label="Date"
           type="date"
-          className="border border-gray-300 rounded-md p-2 bg-red-500"
+          className="border border-gray-300 rounded-md p-2 bg-[#07aea4]"
         />
       ) : (
         <>
@@ -98,6 +100,31 @@ export default function DemoScreen() {
               onChange={(event, date) => {
                 setShowDatePicker(false);
                 if (date) setSelectedDate(date);
+              }}
+            />
+          )}
+        </>
+      )}
+
+      {Platform.OS === "web" ? (
+        <input
+          aria-label="Time"
+          type="time"
+          className="border border-gray-300 rounded-md p-2 bg-[#07aea4]"
+        />
+      ) : (
+        <>
+          <Button onPress={() => setShowTimePicker(true)}>
+            <ButtonText>Select Time</ButtonText>
+          </Button>
+          {showTimePicker && (
+            <DateTimePicker
+              value={selectedTime}
+              mode="time"
+              display="default"
+              onChange={(event, time) => {
+                setShowTimePicker(false);
+                if (time) setSelectedTime(time);
               }}
             />
           )}
