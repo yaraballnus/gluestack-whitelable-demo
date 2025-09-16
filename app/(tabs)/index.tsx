@@ -37,7 +37,7 @@ export default function DemoScreen() {
   const [pressMessage, setPressMessage] = React.useState("");
   const [showGif, setShowGif] = React.useState(false);
   const glowAnimation = React.useRef(new Animated.Value(0)).current;
-  const [setShowLongPressText] = React.useState(false);
+
 
   const startGlowing = () => {
     Animated.timing(glowAnimation, {
